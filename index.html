@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<html lang="en-us">
+
+<head>
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<link rel="stylesheet" type="text/css" href="assets/style.css">
+	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/javascript" href="assets/script.js">
+	
+	<title>GifTastic</title>
+
+
+</head>
+
+<body>
+	<div class="container">	
+		<div class="row">
+			<div id="btnHolder">Buttons go here.</div>
+		<div class="row">
+			<div id="gifBox" class="col-md-8"></div>
+			<form id="form" class="col-md-3">
+  				<!--<div class="form-group"> -->
+    			<label for="band-search">Add a band</label>
+    			<input id="textBox" type="text" class="form-control" id="searchInput" placeholder="search">
+    			<br>
+    			<input id="submitBtn" type="submit" class="btn btn-default" value="Add">
+			</form>
+  			</div>
+		</div>
+		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript">
+			
+var bands = [];
+
+function showBandInfo() {
+//$("button").on("click", function() {
+	var band = $(this).attr("data-band");
+	var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        band + "&api_key=0AWwsjZTvljUMm0gm136sPAkF3uy9pss&limit=10";
+
+	$.ajax({
+		url: queryURL,
+		method: "GET"
+	}).done(function(response) {
+		console.log(response);
+
+		
+		var results = response.data;
+		var rating = response.rating;
+		
+		for (var i = 0; i < results.length; i++) {
+			var bandDiv = $("#gifBox");
+			var p1 = $("<p>");
+			p1.text("Rating: " + results[i], rating);
+			
+
+			var bandImg = $("<img>");
+			bandImg.attr("src", results[i].images.fixed_height.url);
+			bandDiv.append(bandImg);
+		
+			bandDiv.append(p1);
+	};
+  });
+}
+function renderButtons() {
+	$("#btnHolder").empty();
+
+	for (var i = 0; i < bands.length; i++) {
+		var button = $("<button>");
+		button.addClass("bands");
+		button.attr("data-band", bands[i]);
+		button.text(bands[i]);
+		$("#btnHolder").append(button);
+        }
+      }
+
+     $("#submitBtn").on("click", function(event) {
+     	event.preventDefault();
+     	var band = $("#textBox").val().trim();
+
+     	bands.push(band);
+
+     	renderButtons();
+     });
+
+    $(document).on("click", ".bands", showBandInfo);
+
+     renderButtons();
+
+ 
+		</script>
+	</div>
+</body>
+
+</html>
+
+
+
