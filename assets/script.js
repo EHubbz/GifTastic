@@ -20,9 +20,8 @@ function showBandInfo() {
 		for (var i = 0; i < results.length; i++) {
 			var bandDiv = $("<div class=gifs>");
 			var p1 = $("<p>");
-			p1.text("Rating: " + results[i], rating);
+			p1.text("Rating: " + results.data[i].rating);
 			
-
 			var bandImg = $("<img>");
 			bandImg.attr("src", results[i].images.fixed_height_small_still.url);
 			bandImg.attr("data-still", results[i].images.fixed_height_small_still.url);
@@ -34,6 +33,7 @@ function showBandInfo() {
 	};
   });
 }
+
 function renderButtons() {
 	$("#btnHolder").empty();
 
@@ -43,8 +43,8 @@ function renderButtons() {
 		button.attr("data-band", bands[i]);
 		button.text(bands[i]);
 		$("#btnHolder").append(button);
-        }
-      }
+    }
+}
 
      $("#submitBtn").on("click", function(event) {
      	event.preventDefault();
@@ -55,18 +55,18 @@ function renderButtons() {
      	renderButtons();
      });
 
-	$(document).on("click",".gif", function() {
-		var state = $(this).attr("data-state");
-			if (state === "still") {
-				$(this).attr("src", $(this).data("animate"));
-				$(this).attr("data-state", "animate");
+$(document).on("click",".gif", function() {
+	var state = $(this).attr("data-state");
+		if (state === "still") {
+			$(this).attr("src", $(this).data("animate"));
+			$(this).attr("data-state", "animate");
 
-			}else {
-				$(this).attr("src", $(this).data("still"));
-				$(this).attr("data-state", "still");
-			};
-	});   
+		}else {
+			$(this).attr("src", $(this).data("still"));
+			$(this).attr("data-state", "still");
+	};
+});   
 
-    $(document).on("click", ".bands", showBandInfo);
+$(document).on("click", ".bands", showBandInfo);
 
-     renderButtons();
+renderButtons();
