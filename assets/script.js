@@ -1,8 +1,10 @@
-var bands = ["Cher", "Steely Dan", "The Doobie Brothers"];
+var bands = [];
 
 function showBandInfo() {
+
 	var band = $(this).attr("data-band");
-	var queryURL = "" + band + "";
+	var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        band + "&api_key=0AWwsjZTvljUMm0gm136sPAkF3uy9pss&limit=10";
 
 	$.ajax({
 		url: queryURL,
@@ -10,16 +12,28 @@ function showBandInfo() {
 	}).done(function(response) {
 		console.log(response);
 
-		var bandDiv = $("#gifBox");
+		
+		var results = response.data;
+		var rating = response.rating;
+	  //var rating = response[i].rating; does not work?
+		
+		for (var i = 0; i < results.length; i++) {
+			var bandDiv = $("<div class=gifs>");
+			var p1 = $("<p>");
+			p1.text("Rating: " + results[i], rating);
+			
 
-		var rating = response.Rating;
-
-		var p1 = $("<p>").text("Rating: " + response.Rating);
-
-		bandDiv.append(p1)
-	});	
+			var bandImg = $("<img>");
+			bandImg.attr("src", results[i].images.fixed_height_small_still.url);
+			bandImg.attr("data-still", results[i].images.fixed_height_small_still.url);
+			bandImg.attr("data-animate",results[i].images.fixed_height_small.url);
+			bandImg.addClass("gif");
+			bandDiv.append(bandImg);
+			bandDiv.append(p1);
+			$("#gifBox").prepend(bandDiv)
+	};
+  });
 }
-
 function renderButtons() {
 	$("#btnHolder").empty();
 
@@ -30,17 +44,29 @@ function renderButtons() {
 		button.text(bands[i]);
 		$("#btnHolder").append(button);
         }
-      };
+      }
 
      $("#submitBtn").on("click", function(event) {
      	event.preventDefault();
-     	var band = $("#band-search").val().trim();
+     	var band = $("#textBox").val().trim();
 
      	bands.push(band);
 
      	renderButtons();
      });
 
-     $(document).on("click", ".band", showBandInfo);
+	$(document).on("click",".gif", function() {
+		var state = $(this).attr("data-state");
+			if (state === "still") {
+				$(this).attr("src", $(this).data("animate"));
+				$(this).attr("data-state", "animate");
+
+			}else {
+				$(this).attr("src", $(this).data("still"));
+				$(this).attr("data-state", "still");
+			};
+	});   
+
+    $(document).on("click", ".bands", showBandInfo);
 
      renderButtons();

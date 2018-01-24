@@ -7,9 +7,10 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width">
 	<link rel="stylesheet" type="text/css" href="assets/style.css">
-	<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/javascript" href="assets/script.js">
+<!--	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> 
+	<link rel="stylesheet" type="text/javascript" href="assets/script.js">  -->
 	
 	<title>GifTastic</title>
 
@@ -21,8 +22,8 @@
 		<div class="row">
 			<div id="btnHolder">Buttons go here.</div>
 		<div class="row">
-			<div id="gifBox" class="col-md-8"></div>
-			<form id="form" class="col-md-3">
+			<div id="gifBox" class="col-md-9"></div>
+			<form id="form" class="col-md-2">
   				<!--<div class="form-group"> -->
     			<label for="band-search">Add a band</label>
     			<input id="textBox" type="text" class="form-control" id="searchInput" placeholder="search">
@@ -32,13 +33,13 @@
   			</div>
 		</div>
 		</div>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script type="text/javascript">
 			
 var bands = [];
 
 function showBandInfo() {
-//$("button").on("click", function() {
+
 	var band = $(this).attr("data-band");
 	var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
         band + "&api_key=0AWwsjZTvljUMm0gm136sPAkF3uy9pss&limit=10";
@@ -52,18 +53,22 @@ function showBandInfo() {
 		
 		var results = response.data;
 		var rating = response.rating;
+	  //var rating = response[i].rating; does not work?
 		
 		for (var i = 0; i < results.length; i++) {
-			var bandDiv = $("#gifBox");
+			var bandDiv = $("<div class=gifs>");
 			var p1 = $("<p>");
 			p1.text("Rating: " + results[i], rating);
 			
 
 			var bandImg = $("<img>");
-			bandImg.attr("src", results[i].images.fixed_height.url);
+			bandImg.attr("src", results[i].images.fixed_height_small_still.url);
+			bandImg.attr("data-still", results[i].images.fixed_height_small_still.url);
+			bandImg.attr("data-animate",results[i].images.fixed_height_small.url);
+			bandImg.addClass("gif");
 			bandDiv.append(bandImg);
-		
 			bandDiv.append(p1);
+			$("#gifBox").prepend(bandDiv)
 	};
   });
 }
@@ -88,13 +93,26 @@ function renderButtons() {
      	renderButtons();
      });
 
+	$(document).on("click",".gif", function() {
+		var state = $(this).attr("data-state");
+			if (state === "still") {
+				$(this).attr("src", $(this).data("animate"));
+				$(this).attr("data-state", "animate");
+
+			}else {
+				$(this).attr("src", $(this).data("still"));
+				$(this).attr("data-state", "still");
+			};
+	});   
+
     $(document).on("click", ".bands", showBandInfo);
 
      renderButtons();
 
  
-		</script>
+		</script> -->
 	</div>
+
 </body>
 
 </html>
