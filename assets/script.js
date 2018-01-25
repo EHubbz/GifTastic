@@ -1,3 +1,4 @@
+	console.log('haloo')		
 var bands = [];
 
 function showBandInfo() {
@@ -14,14 +15,14 @@ function showBandInfo() {
 
 		
 		var results = response.data;
-		var rating = response.rating;
 	  //var rating = response[i].rating; does not work?
 		
 		for (var i = 0; i < results.length; i++) {
-			var bandDiv = $("<div class=gifs>");
+			var bandDiv = $("<div class='col-md-4'>");
 			var p1 = $("<p>");
-			p1.text("Rating: " + results.data[i].rating);
+			p1.text("Rating: " + results[i].rating);
 			
+
 			var bandImg = $("<img>");
 			bandImg.attr("src", results[i].images.fixed_height_small_still.url);
 			bandImg.attr("data-still", results[i].images.fixed_height_small_still.url);
@@ -43,9 +44,10 @@ function renderButtons() {
 		button.attr("data-band", bands[i]);
 		button.text(bands[i]);
 		$("#btnHolder").append(button);
-    }
-}
+        }
+      }
 
+     
      $("#submitBtn").on("click", function(event) {
      	event.preventDefault();
      	var band = $("#textBox").val().trim();
@@ -55,18 +57,20 @@ function renderButtons() {
      	renderButtons();
      });
 
-$(document).on("click",".gif", function() {
-	var state = $(this).attr("data-state");
-		if (state === "still") {
-			$(this).attr("src", $(this).data("animate"));
-			$(this).attr("data-state", "animate");
+	
+	$(document).on("click",".gif", function() {
+		var state = $(this).attr("data-state");
+			if (state === "still") {
+				$(this).attr("src", $(this).data("animate"));
+				$(this).attr("data-state", "animate");
 
-		}else {
-			$(this).attr("src", $(this).data("still"));
-			$(this).attr("data-state", "still");
-	};
-});   
+			}else {
+				$(this).attr("src", $(this).data("still"));
+				$(this).attr("data-state", "still");
+			};
+	});   
 
-$(document).on("click", ".bands", showBandInfo);
+    
+    $(document).on("click", ".bands", showBandInfo);
 
-renderButtons();
+     renderButtons();
