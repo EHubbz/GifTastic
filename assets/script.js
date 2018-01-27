@@ -1,5 +1,5 @@
-	console.log('haloo')		
-var bands = [];
+	console.log()		
+var bands = ["Led Zeppelin", "Steely Dan", "Jack White"];
 
 function showBandInfo() {
 
